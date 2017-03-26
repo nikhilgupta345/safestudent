@@ -20,9 +20,16 @@ from . import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+
     url(r'^api/v1/', include('api.urls')),
+
     url(r'^login$', views.login),
     url(r'^logout$', views.logout),
     url(r'^register$', views.register),
+
+    url(r'^student/register/$', views.student_register),
+    url(r'^student/(?P<student_id>[0-9]+)$', views.student_profile),
+
+
     url(r'^$', views.index)
 ]

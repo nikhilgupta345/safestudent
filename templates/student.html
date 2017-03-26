@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="jumbotron">
+	<h2>Student: <b>{{ student.first_name }} {{ student.last_name }}</b></h2>
+	<h4>You are a parent or administrator viewing a student's profile.</h4>
+</div>
+
+<div class="jumbotron">
+	<h2>History</h2>
+
+	{% if events %}
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Scanner</th>
+				<th>Time</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for event in events %}
+			<tr>
+				<td>{{ event.scanner_name }}</td>
+				<td>{{ event.time }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{% else %}
+	<h4>This student has no history.</h4>
+	{% endif %}
+</div>
+{% endblock content %}

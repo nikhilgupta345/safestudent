@@ -5,14 +5,9 @@ from django.contrib import auth
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.conf import settings
+from api.models import Student
 
-@login_required
-def index(request):
-	students = request.user.student_set.all()
-	return render(request, 'index.html', {
-		"students": students
-	})
-
+# LOGIN
 def login(request):
 	if request.method == 'POST':
 		username = request.POST['username']
@@ -79,3 +74,56 @@ def register(request):
 
 	auth.login(request, user)
 	return HttpResponseRedirect('/')
+
+
+# PAGES
+@login_required
+def index(request):
+	if request.user.is_staff:
+		students = Student.objects.all()
+		parents = User.objects.filter(is_staff=False)
+		return render(request, 'index-staff.html', {
+			"students": students,
+			"parents": parents
+		})
+	else:
+		students = request.user.student_set.all()
+		return render(request, 'index.html', {
+			"students": students
+		})
+
+def student_register(request):
+	if request.method == "POST":
+		first_name = request.POST.get('first-name', "")
+		last_name = request.POST.get('last-name', "")
+		parent_option = request.POST.get('parent-option', "")
+
+		parent = User.objects.get(id=parent_option)
+
+		# GENERATE QR CODE (student_id)
+
+		# GENERATE UNIQUE ID (student_id)
+
+		s = Student(
+			first_name=first_name,
+			last_name=last_name,
+			parent=parent
+		)
+		s.save()
+	return HttpResponseRedirect('/')
+
+def student_profile(request, student_id):
+	# Check if staff or parent of user
+	student = Student.objects.get(id=student_id)
+	parent = student.parent
+	if request.user.is_staff or request.user == parent:
+		events = []
+		for checkin in student.checkinevent_set.all():
+			return
+
+		return render(request, 'student.html', {
+			"student": student,
+			"events": events
+		})
+	else:
+		return render(request, 'student-error.html', {})

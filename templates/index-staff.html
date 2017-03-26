@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="jumbotron">
+	<h2>Hello, <b>{{ request.user.first_name }} {{ request.user.last_name }}</b>.</h2>
+	<h4>You are an administrator managing {{ students|length }} student(s).</h4>
+	<br>
+	<h4>This is a staff account. Not {{ request.user.first_name }}? <a href="/logout">Logout</a>.</h4>
+</div>
+
+<div class="jumbotron">
+	<h2>Students</h2>
+
+	{% if students %}
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Last check-in</th>
+				<th>Time</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for student in students %}
+			<tr>
+				<th scope="row"><a href="/student/{{ student.id }}">{{ student.first_name }} {{ student.last_name }}</a></th>
+				<td></td>
+				<td></td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{% else %}
+	<h4>You currently have no students.</h4>
+	{% endif %}
+
+	<hr>
+
+	<form id="student-register-form" method="post" action="/student/register/">
+		{% csrf_token %}
+		<div class="form-group row">
+			<div class="col-md-3">
+				<input id="first-name" name="first-name" class="form-control form-control-md" autofocus="true" autocomplete="off" type="text" placeholder="First name" style="display:inline-block" required>
+			</div>
+			<div class="col-md-3">
+				<input id="last-name" name="last-name" class="form-control form-control-md" autofocus="true" autocomplete="off" type="text" placeholder="Last name" style="display:inline-block" required>
+			</div>
+			<div class="col-md-4">
+				<select class="form-control" id="instructor" name="parent-option" class="form-control form-control-lg">
+					<option value="">
+						-- Select a parent --
+					</option>
+					{% for parent in parents %}
+						<option value="{{ parent.id }}">
+							{{ parent.last_name }}, {{ parent.first_name }}
+						</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div class="col-md-2">
+				<button type="submit" class="btn btn-primary" align="left">Register student</button>
+			</div>
+		</div>
+	</form>
+</div>
+{% endblock content %}

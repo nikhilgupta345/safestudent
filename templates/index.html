@@ -1,1 +1,42 @@
 {% extends 'base.html' %}
+
+{% block content %}
+<div class="jumbotron">
+	<h2>Hello, <b>{{ request.user.first_name }} {{ request.user.last_name }}</b>.</h2>
+	<h4>You are a parent managing {{ students|length }} student(s).</h4>
+	<br>
+	<h4>Not {{ request.user.first_name }}? <a href="/logout">Logout</a>.</h4>
+</div>
+
+<div class="jumbotron">
+	<h2>Students</h2>
+
+	{% if students %}
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Last check-in</th>
+				<th>Time</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for student in students %}
+			<tr>
+				<th scope="row"><a href="/student/{{ student.id }}">{{ student.first_name }} {{ student.last_name }}</a></th>
+				<td></td>
+				<td></td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{% else %}
+	<h4>You currently have no students.</h4>
+	{% endif %}
+
+	<hr>
+
+	<h4>Please contact your administrator to add new students.</h4>
+</div>
+{% endblock content %}
