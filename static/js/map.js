@@ -1,3 +1,5 @@
+var selectedInfoWindow;
+
 function initMap() {
 	var data = {};
 	if (typeof student_id !== "undefined") {
@@ -22,8 +24,6 @@ function initMap() {
 		var colors = ["red", "blue", "darkgreen", "orange", "paleblue", "pink", "purple", "yellow", "green", "brown"];
 		var colorHex = ["#ff0000", "#0000ff", "#1a5101", "#e29506", "#06a3e2", "#f23cd6", "#6c0f91", "#f2eb1f", "#51352c"]
 		var markerBaseURL = "/media/images/markers/";
-
-		var infowindow = new google.maps.InfoWindow();
 
 		for (var i in res.data.students) {
 			var student = res.data.students[i];
@@ -75,6 +75,11 @@ function addInfoWindow(marker, student, event) {
 	});
 
 	marker.addListener('click', function() {
+		if (typeof selectedInfoWindow !== 'undefined') {
+			selectedInfoWindow.close();
+		}
+		
 		infowindow.open(marker.get('map'), marker);
+		selectedInfoWindow = infowindow;
 	});
 }
