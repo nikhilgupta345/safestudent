@@ -20,7 +20,10 @@ def event_create(request):
 			return JsonResponse({
 				"status": "error",
 				"message": "No student with that uuid",
-				"data": request.POST
+				"data": {
+					"post": request.POST,
+					"get": request.GET
+				}
 			})
 
 		try:
