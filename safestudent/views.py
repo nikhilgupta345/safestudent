@@ -113,6 +113,8 @@ def student_register(request):
 			parent=parent
 		)
 		s.save()
+		s.generate_qrcode()
+		
 	return HttpResponseRedirect('/')
 
 def student_profile(request, student_id):
