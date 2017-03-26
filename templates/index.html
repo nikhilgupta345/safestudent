@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block content %}
 <div class="jumbotron">
@@ -24,9 +25,9 @@
 		<tbody>
 			{% for student in students %}
 			<tr>
-				<th scope="row"><a href="/student/{{ student.id }}">{{ student.first_name }} {{ student.last_name }}</a></th>
-				<td></td>
-				<td></td>
+				<th scope="row"><a href="/student/{{ student.id }}">{{ student.name }}</a></th>
+				<td>{{ student.last }}</td>
+				<td>{{ student.time|naturaltime }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>

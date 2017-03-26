@@ -5,7 +5,7 @@ from django.contrib import auth
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.conf import settings
-from api.models import Student
+from api.models import Student, Event
 
 # LOGIN
 def login(request):
@@ -81,15 +81,35 @@ def register(request):
 def index(request):
 	if request.user.is_staff:
 		students = Student.objects.all()
+		response = []
+		for student in students:
+			event = Event.objects.filter(student=student).order_by("-time")[0]
+			response.append({
+				"id": student.id,
+				"name": student.first_name + " " + student.last_name,
+				"last": event.scanner_name,
+				"time": event.time
+			})
 		parents = User.objects.filter(is_staff=False)
+		
 		return render(request, 'index-staff.html', {
-			"students": students,
+			"students": response,
 			"parents": parents
 		})
 	else:
 		students = request.user.student_set.all()
+		response = []
+		for student in students:
+			event = Event.objects.filter(student=student).order_by("-time")[0]
+			response.append({
+				"id": student.id,
+				"name": student.first_name + " " + student.last_name,
+				"last": event.scanner_name,
+				"time": event.time
+			})
+
 		return render(request, 'index.html', {
-			"students": students
+			"students": response
 		})
 
 def student_register(request):
@@ -131,4 +151,20 @@ def student_profile(request, student_id):
 			"events": events
 		})
 	else:
-		return render(request, 'student-error.html', {})
+		return render(request, 'error.html', {})
+
+def feed(request):
+	if request.user.is_staff:
+		events = Event.objects.all().order_by("-time")
+		response = []
+		for event in events:
+			response.append({
+				"student_first_name": event.student.first_name,
+				"student_last_name": event.student.last_name,
+				"scanner_name": event.scanner_name,
+				"time": event.time
+			})
+		return render(request, 'feed.html', {
+			"events": response
+		})
+	return render(request, 'error.html', {})
