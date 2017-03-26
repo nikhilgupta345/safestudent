@@ -56,3 +56,42 @@ def event_delete(request):
 		"message": "told you it needs to be a post",
 		"data": None
 	})
+
+def get_student_info(request):
+	data = {
+		"students": []
+	}
+
+	if 'student_id' in request.GET:
+		try:
+			students = request.user.student_set.filter(id=int(request.GET.get('student_id', '')))
+		except:
+			return JsonResponse({
+				"status": "error",
+				"message": "Invalid student ID provided.",
+				"data": None
+			})
+	else:
+		students = request.user.student_set.all()
+
+	for student in students:
+		student_info = {
+			"name": student.first_name + " " + student.last_name
+		}
+		events = []
+		for event in student.event_set.all().order_by('time'):
+			events.append({
+				"latitude": event.latitude,
+				"longitude": event.longitude,
+				"name": event.scanner_name,
+				"timestamp": event.time
+			})
+
+		student_info["events"] = events
+		data["students"].append(student_info)
+
+	return JsonResponse({
+		"status": "success",
+		"message": None,
+		"data": data
+	})
