@@ -10,7 +10,6 @@ $(document).ready(function() {
 				eventDict[data[i].event_id] = data[i].time;
 			}
 		}
-		console.log(eventDict);
 	})
 })
 
@@ -18,9 +17,8 @@ function updateTable() {
 	Promise.resolve($.ajax("/api/v1/event/all"))
 	.then(function(response) {
 		if (response.status == "success") {
-			var row = "<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>";
-
 			var data = response.data;
+
 			for (var i = 0; i < data.length; i++) {
 
 				var name = data[i].student_first_name + " " + data[i].student_last_name;
@@ -32,14 +30,22 @@ function updateTable() {
 				if (!(event_id in eventDict)) {
 					var human = moment.utc(time).fromNow();
 
-					var filled = "<tr><td>" + name + "</td><td>" + scanner + "</td><td>" + human + "</td></tr>";
-					$("#table-feed tr:first").after(filled);
+					var filled = "<tr><td>" + name + "</td><td>" + scanner + "</td><td " + "data-time=\"" + time + "\">" + human + "</td></tr>";
+					$("#table-feed tbody").prepend(filled);
 					eventDict[event_id] = time;
 				}
 			}
 		}
 
-		// TODO: refresh times
+		// Refresh times for all rows
+		var tdList = $("#table-feed").find("td");
+		tdList.each(function() {
+			if ($(this).attr("data-time") !== undefined) {
+				var time = $(this).attr("data-time");
+				var human = moment.utc(time).fromNow();
+				$(this).text(human);
+			}
+		});
 	})
 }
 

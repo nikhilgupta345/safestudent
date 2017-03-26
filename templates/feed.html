@@ -8,8 +8,6 @@
 	<h4>You're currently viewing live updates.</h4>
 
 	<hr>
-
-	{% if events %}
 	<table class="table table-hover" id="table-feed" name="table-feed">
 		<thead>
 			<tr>
@@ -19,18 +17,17 @@
 			</tr>
 		</thead>
 		<tbody>
-			{% for event in events %}
+			{% if events %}
+				{% for event in events %}
 			<tr>
 				<td>{{ event.student_first_name }} {{ event.student_last_name }}</td>
 				<td>{{ event.scanner_name }}</td>
-				<td>{{ event.time|naturaltime }}</td>
+				<td data-time="{{ event.time|date:"c" }}">{{ event.time|naturaltime }}</td>
 			</tr>
-			{% endfor %}
+				{% endfor %}
+			{% endif %}
 		</tbody>
 	</table>
-	{% else %}
-	<h4><b>No updates available.</b></h4>
-	{% endif %}
 </div>
 
 <script type="text/javascript" src="{% static "js/moment.js" %}"></script>

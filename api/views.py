@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from api.models import Student, Event
+import os
+import sendgrid
+from sendgrid.helpers.mail import *
 
 # Create your views here.
 def event_create(request):
@@ -21,15 +24,30 @@ def event_create(request):
 			)
 			event.save()
 
+			# Send email if notifications turned on
+			if student.notifications:
+				parent_email = student.parent.email
+				subject_text = student.first_name + " checked into " + event.scanner_name + " just now"
+				content_text = "This is just a friendly notification - please use your account to see more detailed information. Thanks for using SafeStudent!"
+
+				sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
+
+				from_email = Email("noreply@safestudent.com")
+				to_email = Email(parent_email)
+				subject = subject_text
+				content = Content("text/plain", content_text)
+				mail = Mail(from_email, subject, to_email, content)
+				response = sg.client.mail.send.post(request_body=mail.get())
+
 			return JsonResponse({
 				"status": "success",
 				"message": None,
 				"data": event.id
 			})
-		except:
+		except Exception as e:
 			return JsonResponse({
 				"status": "error",
-				"message": "bro, something broke in the create event API endpoint",
+				"message": str(e),
 				"data": None
 			})
 	return JsonResponse({
