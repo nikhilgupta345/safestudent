@@ -139,10 +139,6 @@ def student_register(request):
 
 		parent = User.objects.get(id=parent_option)
 
-		# GENERATE QR CODE (student_id)
-
-		# GENERATE UNIQUE ID (student_id)
-
 		s = Student(
 			first_name=first_name,
 			last_name=last_name,
@@ -173,6 +169,20 @@ def student_profile(request, student_id):
 		})
 	else:
 		return render(request, 'error.html', {})
+
+def student_notifications_on(request, student_id):
+	# Check if staff or parent of user
+	student = Student.objects.get(id=student_id)
+	student.notifications = True
+	student.save()
+	return HttpResponseRedirect('/student/' + student_id)
+
+def student_notifications_off(request, student_id):
+	# Check if staff or parent of user
+	student = Student.objects.get(id=student_id)
+	student.notifications = False
+	student.save()
+	return HttpResponseRedirect('/student/' + student_id)
 
 def feed(request):
 	if request.user.is_staff:

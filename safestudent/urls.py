@@ -32,6 +32,9 @@ urlpatterns = [
     url(r'^student/register/$', views.student_register),
     url(r'^student/(?P<student_id>[0-9]+)$', views.student_profile),
 
+    url(r'^student/notifications/(?P<student_id>[0-9]+)/on/$', views.student_notifications_on),
+    url(r'^student/notifications/(?P<student_id>[0-9]+)/off/$', views.student_notifications_off),
+
     url(r'^feed$', views.feed),
 
     url(r'^$', views.index)
