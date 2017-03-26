@@ -9,10 +9,12 @@
 			<h2>Student: <b>{{ student.first_name }} {{ student.last_name }}</b></h2>
 			<h4>You are a parent or administrator viewing a student's profile.</h4>
 			<br>
-			{% if student.notifications %}
-				<h4>You are being notified for this student's activity. <a href="/student/notifications/{{ student.id }}/off">Turn off.</a></h4>
-			{% else %}
-				<h4>You are <b>not</b> being notified for this student's activity. <a href="/student/notifications/{{ student.id }}/on">Turn on.</a></h4>
+			{% if not user.is_staff %}
+				{% if student.notifications %}
+					<h4>You are being notified for this student's activity. <a href="/student/notifications/{{ student.id }}/off">Turn off.</a></h4>
+				{% else %}
+					<h4>You are <b>not</b> being notified for this student's activity. <a href="/student/notifications/{{ student.id }}/on">Turn on.</a></h4>
+				{% endif %}
 			{% endif %}
 		</div>
 		<div class="col-md-3">
