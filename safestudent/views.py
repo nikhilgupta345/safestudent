@@ -19,7 +19,7 @@ def login(request):
 			return HttpResponseRedirect('/')
 		else:
 			return render(request, 'login.html', {
-				'login_message': "Either that username or password was wrong. Try again?"
+				'message': "Either that username or password was wrong. Try again?"
 			})
 	elif request.user.is_authenticated():
 		return HttpResponseRedirect('/')
