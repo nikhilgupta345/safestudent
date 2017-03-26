@@ -19,7 +19,7 @@ def login(request):
 			return HttpResponseRedirect('/')
 		else:
 			return render(request, 'login.html', {
-				'login_message': "Either that username or password was wrong. Try again?"
+				'message': "Either that username or password was wrong. Try again?"
 			})
 	elif request.user.is_authenticated():
 		return HttpResponseRedirect('/')
@@ -31,8 +31,11 @@ def logout(request):
 	return HttpResponseRedirect('/login')
 
 def register(request):
-	if request.method != "POST" or request.user.is_authenticated():
-		return HttpResponseRedirect('/login')
+	if request.user.is_authenticated():
+		return HttpResponse('/login')
+
+	elif request.method == "GET":
+		return render(request, 'register.html')
 
 	firstname = request.POST.get('firstname', '').strip()
 	lastname = request.POST.get('lastname', '').strip()
@@ -42,25 +45,25 @@ def register(request):
 	confirm = request.POST.get('confirm-password', '')
 
 	if len(firstname) < 2 or len(lastname) < 2:
-		return render(request, 'login.html', {
-			'register_message': "Your name wasn't valid."
+		return render(request, 'register.html', {
+			'message': "Your name wasn't valid."
 		})
 	if username == "":
-		return render(request, 'login.html', {
-			'register_message': "Your username was empty."
+		return render(request, 'register.html', {
+			'message': "Your username was empty."
 		})
 	if password != confirm:
-		return render(request, 'login.html', {
-			'register_message': "Your passwords didn't match."
+		return render(request, 'register.html', {
+			'message': "Your passwords didn't match."
 		})
 	if len(User.objects.filter(username=username)) != 0:
-		return render(request, 'login.html', {
-			'register_message': "That username already exists."
+		return render(request, 'register.html', {
+			'message': "That username already exists."
 		})
 	try:
 		auth.password_validation.validate_password(password, settings.AUTH_PASSWORD_VALIDATORS)
 	except ValidationError as e:
-		return render(request, 'login.html', {
+		return render(request, 'register.html', {
 			'validations': e
 		})
 		
