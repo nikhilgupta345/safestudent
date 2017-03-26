@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load humanize %}
+{% load staticfiles %}
 
 {% block content %}
 <div class="jumbotron">
@@ -40,4 +41,17 @@
 
 	<h4>Please contact your administrator to add new students.</h4>
 </div>
+
+<div class="row">
+	<div class="col-md-12">
+		<div id="map" style="width:100%; height:400px; background-color: grey;"></div>
+	</div>
+</div>
 {% endblock content %}
+
+{% block scripts %}
+	{{ block.super }}
+	<script src="{% static "js/map.js" %}"></script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxGytr051tiWScTjU5CS1VD_FijhsVixc&callback=initMap">
+	</script>
+{% endblock scripts %}

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block stylesheets %}
+	{{ block.super }}
+	<link rel="stylesheet" type="text/css" href="{% static "css/login.css" %}">
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="jumbotron">
+		<center>
+			<h4 class="title">
+				Register
+			</h4>
+			<p class="lead">
+				Already have an account? <b><a href="/login">Login here.</a></b>
+			</p>
+
+			<br>
+
+			<form id="register-form" method="post" action="/register" style="width:60%">
+				{% csrf_token %}
+				<div class="form-group row">
+					<div class="col-md-6">
+						<input id="firstname" name="firstname" class="form-control form-control-md" autofocus="true" autocomplete="off" type="text" placeholder="First name" style="display:inline-block" required>
+					</div>
+					<div class="col-md-6">
+						<input id="lastname" name="lastname" class="form-control form-control-md" autocomplete="off" type="text" placeholder="Last name" style="display:inline-block" required>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<input id="email" name="email" class="form-control form-control-md" autocomplete="off" type="email" placeholder="Email" required>
+				</div>
+
+				<div class="form-group">
+					<input id="username" name="username" class="form-control form-control-md" autocomplete="off" type="text" placeholder="Username" required>
+				</div>
+
+				<div class="form-group">
+					<input id="password" name="password" class="form-control form-control-md" autocomplete="off" type="password" placeholder="Password" required>
+				</div>
+				<div class="form-group">
+					<input id="confirm" name="confirm-password" class="form-control form-control-md" autocomplete="off" type="password" placeholder="Confirm password" required>
+				</div>
+				<small class="form-text text-muted">
+					<b>Your password should be at least 8 characters and have some numbers.</b>
+				</small>
+
+				<br><br>
+				<div class="form-group">
+					<button id="submit" name="submit" type="submit" class="btn btn-primary">Register</button>
+				</div>
+			</form>
+
+			{% if message %}
+			<br>
+			<p><b>{{ message }}</b></p>
+			{% endif %}
+
+			{% if validations %}
+			<br>
+			<p>
+				<b>That's not a strong enough password:</b>
+				<br>
+				{% for validation in validations %}
+				{{ validation }}<br>
+				{% endfor %}
+			</p>
+			{% endif %}
+		</center>
+	</div>
+</div>
+{% endblock content %}
