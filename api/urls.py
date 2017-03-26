@@ -6,4 +6,5 @@ from . import views
 urlpatterns = [
     url(r'^event/create$', views.event_create),
     url(r'^event/delete$', views.event_delete),
+    url(r'^get_student_info$', views.get_student_info),
 ]
