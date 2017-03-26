@@ -57,6 +57,23 @@ def event_delete(request):
 		"data": None
 	})
 
+def event_all(request):
+	events = Event.objects.all()
+	response = []
+	for event in events:
+		response.append({
+			"event_id": event.id,
+			"student_first_name": event.student.first_name,
+			"student_last_name": event.student.last_name,
+			"scanner_name": event.scanner_name,
+			"time": event.time
+		})
+	return JsonResponse({
+		"status": "success",
+		"message": None,
+		"data": response
+	})
+
 def get_student_info(request):
 	data = {
 		"students": []
