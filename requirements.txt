@@ -10,3 +10,4 @@ pyparsing==2.2.0
 qrcode==5.1
 six==1.10.0
 whitenoise==3.2
+sendgrid==3.6.3
