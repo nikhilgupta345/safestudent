@@ -4,6 +4,7 @@ from api.models import Student, Event
 import os
 import sendgrid
 from sendgrid.helpers.mail import *
+from django.utils import timezone
 
 # Create your views here.
 def event_create(request):
@@ -13,19 +14,27 @@ def event_create(request):
 		latitude = request.POST.get("latitude", "")
 		scanner_name = request.POST.get("scanner_name", "")
 
-
 		try:
 			student = Student.objects.get(uuid=int(uuid))
 		except:
 			return JsonResponse({
 				"status": "error",
 				"message": "No student with that uuid",
-				"data": {
-					"post": request.POST,
-					"get": request.GET
-				}
+				"data": None
 			})
 
+
+		event_by_time = student.event_set.order_by('-time')
+		if len(event_by_time) != 0:
+			last_event = event_by_time[0]
+			time_elapsed = (timezone.now() - last_event.time).total_seconds()
+			if time_elapsed < 10:
+				return JsonResponse({
+					"status": "error",
+					"message": "An event was recently created for this user.",
+					"data": None
+				})
+				
 		try:
 			event = Event(
 				student=student,
