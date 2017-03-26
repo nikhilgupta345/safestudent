@@ -86,13 +86,21 @@ def index(request):
 		students = Student.objects.all()
 		response = []
 		for student in students:
-			event = Event.objects.filter(student=student).order_by("-time")[0]
-			response.append({
-				"id": student.id,
-				"name": student.first_name + " " + student.last_name,
-				"last": event.scanner_name,
-				"time": event.time
-			})
+			try:
+				event = Event.objects.filter(student=student).order_by("-time")[0]
+				response.append({
+					"id": student.id,
+					"name": student.first_name + " " + student.last_name,
+					"last": event.scanner_name,
+					"time": event.time
+				})
+			except:
+				response.append({
+					"id": student.id,
+					"name": student.first_name + " " + student.last_name,
+					"last": "",
+					"time": ""
+				})
 		parents = User.objects.filter(is_staff=False)
 		
 		return render(request, 'index-staff.html', {
@@ -103,13 +111,21 @@ def index(request):
 		students = request.user.student_set.all()
 		response = []
 		for student in students:
-			event = Event.objects.filter(student=student).order_by("-time")[0]
-			response.append({
-				"id": student.id,
-				"name": student.first_name + " " + student.last_name,
-				"last": event.scanner_name,
-				"time": event.time
-			})
+			try:
+				event = Event.objects.filter(student=student).order_by("-time")[0]
+				response.append({
+					"id": student.id,
+					"name": student.first_name + " " + student.last_name,
+					"last": event.scanner_name,
+					"time": event.time
+				})
+			except:
+				response.append({
+					"id": student.id,
+					"name": student.first_name + " " + student.last_name,
+					"last": "",
+					"time": ""
+				})
 
 		return render(request, 'index.html', {
 			"students": response
