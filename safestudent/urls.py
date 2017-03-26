@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^student/notifications/(?P<student_id>[0-9]+)/on/$', views.student_notifications_on),
     url(r'^student/notifications/(?P<student_id>[0-9]+)/off/$', views.student_notifications_off),
 
+    url(r'^create_new_code$', views.create_new_code),
     url(r'^feed$', views.feed),
 
     url(r'^$', views.index)

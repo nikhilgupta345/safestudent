@@ -8,12 +8,19 @@ from sendgrid.helpers.mail import *
 # Create your views here.
 def event_create(request):
 	if request.method == "POST":
-		student_id = request.POST.get("student_id", "")
+		uuid = request.POST.get("uuid", "")
 		longitude = request.POST.get("longitude", "")
 		latitude = request.POST.get("latitude", "")
 		scanner_name = request.POST.get("scanner_name", "")
 
-		student = Student.objects.get(id=student_id)
+		try:
+			student = Student.objects.get(uuid=int(uuid))
+		except:
+			return JsonResponse({
+				"status": "error",
+				"message": "No student with that uuid",
+				"data": None
+			})
 
 		try:
 			event = Event(

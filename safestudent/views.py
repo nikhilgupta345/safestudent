@@ -182,6 +182,20 @@ def student_notifications_off(request, student_id):
 	student = Student.objects.get(id=student_id)
 	student.notifications = False
 	student.save()
+
+	return HttpResponseRedirect('/student/' + student_id)
+
+def create_new_code(request):
+	if request.method == "POST":
+		print(request.POST)
+		try:
+			student_id = request.POST['student_id']
+			s = Student.objects.get(id=student_id)
+			s.generate_qrcode()
+		except Exception as e:
+			print(str(e))
+			return HttpResponseRedirect('/')
+
 	return HttpResponseRedirect('/student/' + student_id)
 
 def feed(request):
