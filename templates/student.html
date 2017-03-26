@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block content %}
 <div class="jumbotron">
@@ -21,7 +22,7 @@
 			{% for event in events %}
 			<tr>
 				<td>{{ event.scanner_name }}</td>
-				<td>{{ event.time }}</td>
+				<td>{{ event.time|naturaltime }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>

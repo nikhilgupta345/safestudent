@@ -12,7 +12,7 @@ class Student(models.Model):
 	
 	qr_code = models.ImageField(upload_to='qrcodes', blank=True, null=True)
 
-class CheckInEvent(models.Model):
+class Event(models.Model):
 	student = models.ForeignKey(Student, on_delete=models.CASCADE)
 	
 	latitude = models.DecimalField(max_digits=9, decimal_places=6)

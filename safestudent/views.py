@@ -118,8 +118,13 @@ def student_profile(request, student_id):
 	parent = student.parent
 	if request.user.is_staff or request.user == parent:
 		events = []
-		for checkin in student.checkinevent_set.all():
-			return
+		for event in student.event_set.all().order_by('-time'):
+			events.append({
+				"scanner_name": event.scanner_name,
+				"longitude": event.longitude,
+				"latitude": event.latitude,
+				"time": event.time
+			})
 
 		return render(request, 'student.html', {
 			"student": student,
