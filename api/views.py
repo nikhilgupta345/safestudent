@@ -81,7 +81,10 @@ def get_student_info(request):
 
 	if 'student_id' in request.GET:
 		try:
-			students = request.user.student_set.filter(id=int(request.GET.get('student_id', '')))
+			if request.user.is_staff:
+				students = Student.objects.filter(id=int(request.GET.get('student_id', '')))
+			else:
+				students = request.user.student_set.filter(id=int(request.GET.get('student_id', '')))
 		except:
 			return JsonResponse({
 				"status": "error",
@@ -89,7 +92,10 @@ def get_student_info(request):
 				"data": None
 			})
 	else:
-		students = request.user.student_set.all()
+		if request.user.is_staff:
+			students = Student.objects.all()
+		else:
+			students = request.user.student_set.all()
 
 	for student in students:
 		student_info = {
