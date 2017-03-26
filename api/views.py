@@ -13,13 +13,14 @@ def event_create(request):
 		latitude = request.POST.get("latitude", "")
 		scanner_name = request.POST.get("scanner_name", "")
 
+
 		try:
 			student = Student.objects.get(uuid=int(uuid))
 		except:
 			return JsonResponse({
 				"status": "error",
 				"message": "No student with that uuid",
-				"data": None
+				"data": request.POST
 			})
 
 		try:
