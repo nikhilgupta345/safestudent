@@ -57,10 +57,10 @@ function initMap() {
 		map.fitBounds(bounds);
 
 		//(optional) restore the zoom level after the map is done scaling
-		var listener = google.maps.event.addListener(map, "idle", function () {
+		/*var listener = google.maps.event.addListener(map, "idle", function () {
 		    map.setZoom(12);
 		    google.maps.event.removeListener(listener);
-		});
+		});*/
 
 	})
 	.catch(function(e) {
