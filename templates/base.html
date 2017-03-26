@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0 minimal-ui"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+
+    {% load staticfiles %}
+    <link rel="shortcut icon" href="{% static "favicon.ico" %}" />
+
+    <title>SafeStudent</title>
+
+	{% block scripts %}
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    	<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    {% endblock scripts %}
+
+    {% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    {% endblock stylesheets %}
+
+    {% block head %}{% endblock %}
+  </head>
+
+  <body>
+    <div class="container">
+      <div id="banner" class="page-header">
+        <h1>{% block title %}SafeStudent{% endblock %}</h1>
+        <div id="links">
+          <a href="/">Home</a>
+          <br>
+          <a href="/logout">Logout</a>
+        </div>
+      </div>
+
+      {% block content %}{% endblock %}
+    </div>
+  </body>
+</html>
