@@ -6,6 +6,7 @@ import qrcode
 import io
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import sys
+import uuid
 
 # Create your models here.
 class Student(models.Model):
@@ -17,6 +18,7 @@ class Student(models.Model):
 	parent = models.ForeignKey(User, on_delete=models.CASCADE)
 	
 	qr_code = models.ImageField(upload_to='qrcodes', blank=True, null=True)
+	uuid = models.BigIntegerField(blank=True, null=True)
 
 	def generate_qrcode(self):
 		qr = qrcode.QRCode(
@@ -25,7 +27,10 @@ class Student(models.Model):
 		    box_size=6,
 		    border=0,
 		)
-		qr.add_data(self.id)
+		self.uuid = uuid.uuid1().int>>65
+		self.save()
+
+		qr.add_data(self.uuid)
 		qr.make(fit=True)
 
 		img = qr.make_image()

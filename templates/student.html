@@ -5,7 +5,7 @@
 {% block content %}
 <div class="jumbotron">
 	<div class="row">
-		<div class="col-md-8">
+		<div class="col-md-9">
 			<h2>Student: <b>{{ student.first_name }} {{ student.last_name }}</b></h2>
 			<h4>You are a parent or administrator viewing a student's profile.</h4>
 			<br>
@@ -15,10 +15,26 @@
 				<h4>You are <b>not</b> being notified for this student's activity. <a href="/student/notifications/{{ student.id }}/on">Turn on.</a></h4>
 			{% endif %}
 		</div>
-		<div class="col-md-4">
-			{% if student.qr_code %}
-				<img src="{{ student.qr_code.url }}" alt="QR Code" style="float: right" />
-			{% endif %}
+		<div class="col-md-3">
+			<div class="row">
+				<div class="col-md-12">
+				<center>
+					{% if student.qr_code %}
+						<img src="{{ student.qr_code.url }}" alt="QR Code" />
+					{% endif %}
+				</center>
+				</div>
+			</div> <br>
+			<div class="row">
+				<div class="col-md-12">
+					<center>
+						<form action="/create_new_code" method="post">
+							<input type="hidden" name="student_id" value="{{ student.id }}">
+							<button type="submit" class="btn btn-primary">Generate New Code</button>
+						</form>
+					</center>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
