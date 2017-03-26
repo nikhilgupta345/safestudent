@@ -1,6 +1,6 @@
 function initMap() {
 	var data = {};
-	if (student_id) {
+	if (typeof student_id !== "undefined") {
 		data["student_id"] = student_id;
 	}
 
