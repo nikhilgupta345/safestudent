@@ -18,6 +18,7 @@ function updateTable() {
 	.then(function(response) {
 		if (response.status == "success") {
 			var data = response.data;
+
 			for (var i = 0; i < data.length; i++) {
 
 				var name = data[i].student_first_name + " " + data[i].student_last_name;
@@ -30,7 +31,7 @@ function updateTable() {
 					var human = moment.utc(time).fromNow();
 
 					var filled = "<tr><td>" + name + "</td><td>" + scanner + "</td><td " + "data-time=\"" + time + "\">" + human + "</td></tr>";
-					$("#table-feed tr:first").after(filled);
+					$("#table-feed tbody").prepend(filled);
 					eventDict[event_id] = time;
 				}
 			}

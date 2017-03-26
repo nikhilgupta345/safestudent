@@ -26,10 +26,10 @@ def event_create(request):
 				"message": None,
 				"data": event.id
 			})
-		except:
+		except Exception as e:
 			return JsonResponse({
 				"status": "error",
-				"message": "bro, something broke in the create event API endpoint",
+				"message": str(e),
 				"data": None
 			})
 	return JsonResponse({
