@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^student/register/$', views.student_register),
     url(r'^student/(?P<student_id>[0-9]+)$', views.student_profile),
 
+    url(r'^feed$', views.feed),
 
     url(r'^$', views.index)
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
