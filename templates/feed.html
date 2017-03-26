@@ -23,7 +23,7 @@
 			<tr>
 				<td>{{ event.student_first_name }} {{ event.student_last_name }}</td>
 				<td>{{ event.scanner_name }}</td>
-				<td>{{ event.time|naturaltime }}</td>
+				<td data-time="{{ event.time|date:"c" }}">{{ event.time|naturaltime }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>

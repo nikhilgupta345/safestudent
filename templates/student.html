@@ -11,7 +11,7 @@
 		</div>
 		<div class="col-md-4">
 			{% if student.qr_code %}
-				<img class="float-xs-right" src="{{ student.qr_code.url }}" alt="QR Code" />
+				<img src="{{ student.qr_code.url }}" alt="QR Code" style="float: right" />
 			{% endif %}
 		</div>
 	</div>
