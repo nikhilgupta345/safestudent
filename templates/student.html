@@ -10,7 +10,9 @@
 			<h4>You are a parent or administrator viewing a student's profile.</h4>
 		</div>
 		<div class="col-md-4">
-			<img class="float-xs-right" src="{{ student.qr_code.url }}" alt="QR Code" />
+			{% if student.qr_code %}
+				<img class="float-xs-right" src="{{ student.qr_code.url }}" alt="QR Code" />
+			{% endif %}
 		</div>
 	</div>
 </div>
